@@ -25,3 +25,47 @@ if %PASS_PERCENTAGE% LSS 75 (
 ) else (
     echo Build passed! Test pass percentage is %PASS_PERCENTAGE%%.
 )
+
+
+
+
+
+
+
+-------
+
+
+@echo off
+setlocal enabledelayedexpansion
+
+set "totalTests=0"
+set "failures=0"
+set "errors=0"
+
+:: Loop through all Surefire reports to extract test summary
+for /f "tokens=3,5,7 delims=:," %%A in ('findstr /C:"Tests run:" target\surefire-reports\*.txt') do (
+    set /A totalTests+=%%A
+    set /A failures+=%%B
+    set /A errors+=%%C
+)
+
+:: Calculate pass percentage
+set /A passedTests=totalTests-failures-errors
+set /A passPercentage=(passedTests*100)/totalTests
+
+echo ========================================
+echo Total Tests: %totalTests%
+echo Passed: %passedTests%
+echo Failures: %failures%
+echo Errors: %errors%
+echo Pass Percentage: %passPercentage%% 
+echo ========================================
+
+:: Check if pass rate is below 75%
+if %passPercentage% LSS 75 (
+    echo ❌ Build failed! Test pass percentage is below 75%.
+    exit /b 1
+) else (
+    echo ✅ Build passed!
+    exit /b 0
+)
