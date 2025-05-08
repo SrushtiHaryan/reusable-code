@@ -54,3 +54,55 @@ if (-not (Test-Path "C:\Scripts\Logs")) {
 }
 
 
+
+------------------------
+
+param(
+    [string]$ClientName
+)
+
+# === CONFIGURATION ===
+$BasePath = "C:\Scripts"
+$StartTime = (Get-Date).AddMinutes(1).ToString("HH:mm")
+$RepeatInterval = 10  # in minutes
+$Duration = "23:59"
+
+# === Create client-specific script names ===
+$PdfScriptName = "datacap-pdf-ingester-regular-$ClientName.ps1"
+$ZipScriptName = "datacap-zip-streaming-regular-$ClientName.ps1"
+
+$PdfScriptPath = Join-Path $BasePath $PdfScriptName
+$ZipScriptPath = Join-Path $BasePath $ZipScriptName
+
+# === Sample content for the scripts ===
+$PdfContent = @"
+Write-Output "Running PDF ingestion for client: $ClientName"
+# TODO: Add actual ingestion logic here
+"@
+
+$ZipContent = @"
+Write-Output "Running ZIP streaming for client: $ClientName"
+# TODO: Add actual ZIP streaming logic here
+"@
+
+# === Create the scripts ===
+Set-Content -Path $PdfScriptPath -Value $PdfContent -Encoding UTF8
+Set-Content -Path $ZipScriptPath -Value $ZipContent -Encoding UTF8
+
+# === Schedule Task 1: PDF Ingestion ===
+schtasks /Create `
+  /TaskName "\Autodoc_Stream3\PDF-INGESTION\DAILIES\$ClientName" `
+  /TaskRun "powershell.exe -ExecutionPolicy Bypass -File `"$PdfScriptPath`"" `
+  /Schedule DAILY /StartTime $StartTime /RepeatInterval $RepeatInterval /Duration $Duration `
+  /Force
+
+# === Schedule Task 2: ZIP Streaming ===
+schtasks /Create `
+  /TaskName "\Autodoc_Stream3\ZIP_STREAMING\DAILIES\$ClientName" `
+  /TaskRun "powershell.exe -ExecutionPolicy Bypass -File `"$ZipScriptPath`"" `
+  /Schedule DAILY /StartTime $StartTime /RepeatInterval $RepeatInterval /Duration $Duration `
+  /Force
+
+Write-Output "✅ Scripts and tasks created for client: $ClientName"
+
+
