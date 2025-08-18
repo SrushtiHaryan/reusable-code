@@ -1,0 +1,9 @@
+apiVersion: v2
+name: orders-service
+description: A Helm chart for orders-service
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+maintainers:
+  - name: platform-team
+    email: platform@myorg.com

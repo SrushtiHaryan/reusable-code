@@ -1,0 +1,21 @@
+# Values for {{ name }}
+name: {{ name }}
+replicaCount: {{ replicas }}
+image: "{{ image }}"
+imagePullPolicy: "{{ imagePullPolicy }}"
+labels:
+{% if labels %}{% for k, v in labels.items() %}  {{ k }}: {{ v }}
+{% endfor %}{% endif %}
+service:
+  port: {{ port }}
+resources:
+  requests:
+    cpu: "{{ resources.requests.cpu }}"
+    memory: "{{ resources.requests.memory }}"
+  limits:
+    cpu: "{{ resources.limits.cpu }}"
+    memory: "{{ resources.limits.memory }}"
+ingress:
+  enabled: {{ ingress.enabled | default(false) | lower }}
+  className: "{{ ingress.className | default('') }}"
+  host: "{{ ingress.host | default('') }}"

@@ -1,0 +1,23 @@
+# Values for orders-service
+name: orders-service
+replicaCount: 2
+image: "registry.example.com/orders:1.0.0"
+imagePullPolicy: "Always"
+labels:
+  team: cbtech
+  managed-by: helmgen
+  domain: payments
+  owner: tribe-cbtech
+service:
+  port: 8080
+resources:
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+ingress:
+  enabled: true
+  className: ""
+  host: "orders.dev.myorg.com"

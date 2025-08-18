@@ -1,0 +1,14 @@
+# Example input file for a single microservice
+# Rename and edit this file per app, then run:
+#   python cli.py create --file app.yaml
+name: orders-service
+image: registry.example.com/orders:1.0.0
+replicas: 2
+port: 8080
+ingress:
+  enabled: true
+  className: ""
+  host: orders.dev.myorg.com
+labels:
+  domain: payments
+  owner: tribe-cbtech

@@ -1,0 +1,10 @@
+apiVersion: v2
+name: {{ name }}
+description: A Helm chart for {{ name }}
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+{% if maintainers %}maintainers:
+{% for m in maintainers %}  - name: {{ m.name }}
+    email: {{ m.email }}
+{% endfor %}{% endif %}
