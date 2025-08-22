@@ -1,0 +1,18 @@
+name: my-service
+image: myregistry/my-service
+replicas: 2
+ports:
+  - 8080
+  - 9090
+env:
+  - name: ENVIRONMENT
+    value: "production"
+  - name: LOG_LEVEL
+    value: "debug"
+secrets:
+  - name: my-secret
+    key: password
+    value: s3cr3t
+volumes:
+  - name: data-volume
+    mountPath: /data

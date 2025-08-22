@@ -1,0 +1,72 @@
+name: sample-app
+
+replicaCount: 2
+
+image:
+  repository: nginx
+  tag: 1.21.6
+  pullPolicy: IfNotPresent
+  environment: production
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+
+labels:
+  app.kubernetes.io/name: sample-app
+  app.kubernetes.io/instance: sample-app-instance
+  app.kubernetes.io/version: 1.0.0
+  app.kubernetes.io/component: backend
+  app.kubernetes.io/part-of: sample-project
+  app.kubernetes.io/managed-by: helm
+
+
+env:
+  - name: ENV
+    value: production
+
+
+envFrom:
+  []
+
+
+secrets:
+  []
+
+
+configmaps:
+  []
+
+
+volumes:
+  []
+
+
+volumeMounts:
+  []
+
+
+ingress:
+  {}
+
+
+nodeSelector:
+  {}
+
+
+affinity:
+  {}
+
+
+tolerations:
+  []
